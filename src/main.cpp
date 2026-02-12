@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "core/config.h"
 #include "core/state.h"
-#include "network/api_client.h"
+#include "network/mta_fetcher.h"
 #include "network/wifi_manager.h"
 #include "display/display_config.h"
 #include "display/display_renderer.h"
@@ -14,7 +14,7 @@ void setup() {
 
     dma_display = initDisplay();
     setupWiFi(dma_display);
-    fetchAllTrainTimes();
+    fetchTrainTimes();
     renderDisplay(dma_display);
     lastUpdate = millis();
 }
@@ -24,7 +24,7 @@ void loop() {
         lastUpdate = millis();
         Serial.println("Refreshing train data...");
         
-        if (fetchAllTrainTimes()) {
+        if (fetchTrainTimes()) {
             renderDisplay(dma_display);
         } else {
             Serial.println("Failed to update data");

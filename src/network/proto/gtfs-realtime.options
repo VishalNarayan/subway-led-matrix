@@ -1,0 +1,82 @@
+# nanopb options for GTFS-RT proto
+# Uses proto-style dot notation (not C underscore names)
+
+# FeedMessage: use callback for repeated entities (streaming parse)
+transit_realtime.FeedMessage.entity             type:FT_CALLBACK
+
+# FeedHeader: constrain strings
+transit_realtime.FeedHeader.gtfs_realtime_version  max_size:8
+transit_realtime.FeedHeader.feed_version           type:FT_IGNORE
+
+# FeedEntity: constrain id, ignore fields we don't use
+transit_realtime.FeedEntity.id                  max_size:16
+transit_realtime.FeedEntity.vehicle             type:FT_IGNORE
+transit_realtime.FeedEntity.alert               type:FT_IGNORE
+transit_realtime.FeedEntity.shape               type:FT_IGNORE
+transit_realtime.FeedEntity.stop                type:FT_IGNORE
+transit_realtime.FeedEntity.trip_modifications   type:FT_IGNORE
+
+# TripUpdate: use callback for repeated stop_time_update
+transit_realtime.TripUpdate.stop_time_update    type:FT_CALLBACK
+transit_realtime.TripUpdate.vehicle             type:FT_IGNORE
+transit_realtime.TripUpdate.trip_properties     type:FT_IGNORE
+
+# TripDescriptor: constrain route_id, ignore unneeded strings
+transit_realtime.TripDescriptor.trip_id         type:FT_IGNORE
+transit_realtime.TripDescriptor.route_id        max_size:4
+transit_realtime.TripDescriptor.start_time      type:FT_IGNORE
+transit_realtime.TripDescriptor.start_date      type:FT_IGNORE
+transit_realtime.TripDescriptor.modified_trip   type:FT_IGNORE
+
+# StopTimeUpdate: constrain stop_id, ignore unneeded fields
+transit_realtime.TripUpdate.StopTimeUpdate.stop_id                       max_size:8
+transit_realtime.TripUpdate.StopTimeUpdate.stop_time_properties          type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeUpdate.departure_occupancy_status    type:FT_IGNORE
+
+# StopTimeEvent: only keep time, ignore rest
+transit_realtime.TripUpdate.StopTimeEvent.delay             type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeEvent.uncertainty        type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeEvent.scheduled_time     type:FT_IGNORE
+
+# StopTimeProperties: ignore entirely (nested)
+transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.assigned_stop_id  type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.stop_headsign     type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.pickup_type       type:FT_IGNORE
+transit_realtime.TripUpdate.StopTimeUpdate.StopTimeProperties.drop_off_type     type:FT_IGNORE
+
+# TripProperties: ignore entirely
+transit_realtime.TripUpdate.TripProperties.trip_id          type:FT_IGNORE
+transit_realtime.TripUpdate.TripProperties.start_date       type:FT_IGNORE
+transit_realtime.TripUpdate.TripProperties.start_time       type:FT_IGNORE
+transit_realtime.TripUpdate.TripProperties.shape_id         type:FT_IGNORE
+transit_realtime.TripUpdate.TripProperties.trip_headsign    type:FT_IGNORE
+transit_realtime.TripUpdate.TripProperties.trip_short_name  type:FT_IGNORE
+
+# VehiclePosition: ignore all fields
+transit_realtime.VehiclePosition.trip           type:FT_IGNORE
+transit_realtime.VehiclePosition.vehicle        type:FT_IGNORE
+transit_realtime.VehiclePosition.position       type:FT_IGNORE
+transit_realtime.VehiclePosition.current_stop_sequence  type:FT_IGNORE
+transit_realtime.VehiclePosition.stop_id        type:FT_IGNORE
+transit_realtime.VehiclePosition.current_status type:FT_IGNORE
+transit_realtime.VehiclePosition.timestamp      type:FT_IGNORE
+transit_realtime.VehiclePosition.congestion_level  type:FT_IGNORE
+transit_realtime.VehiclePosition.occupancy_status  type:FT_IGNORE
+transit_realtime.VehiclePosition.occupancy_percentage  type:FT_IGNORE
+transit_realtime.VehiclePosition.multi_carriage_details  type:FT_IGNORE
+
+# Alert: ignore all
+transit_realtime.Alert.active_period            type:FT_IGNORE
+transit_realtime.Alert.informed_entity          type:FT_IGNORE
+transit_realtime.Alert.cause                    type:FT_IGNORE
+transit_realtime.Alert.effect                   type:FT_IGNORE
+transit_realtime.Alert.url                      type:FT_IGNORE
+transit_realtime.Alert.header_text              type:FT_IGNORE
+transit_realtime.Alert.description_text         type:FT_IGNORE
+transit_realtime.Alert.tts_header_text          type:FT_IGNORE
+transit_realtime.Alert.tts_description_text     type:FT_IGNORE
+transit_realtime.Alert.severity_level           type:FT_IGNORE
+transit_realtime.Alert.image                    type:FT_IGNORE
+transit_realtime.Alert.image_alternative_text   type:FT_IGNORE
+transit_realtime.Alert.cause_detail             type:FT_IGNORE
+transit_realtime.Alert.effect_detail            type:FT_IGNORE

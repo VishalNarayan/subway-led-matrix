@@ -4,6 +4,7 @@
 #include <WebServer.h>
 #include <Preferences.h>
 #include <Fonts/Picopixel.h>
+#include <time.h>
 
 static const char* NVS_NAMESPACE = "subway-wifi";
 static const char* NVS_KEY_SSID = "ssid";
@@ -174,6 +175,27 @@ static bool tryConnect(MatrixPanel_I2S_DMA* display, const String& ssid, const S
 
     if (WiFi.status() == WL_CONNECTED) {
         Serial.printf("Connected! IP: %s\n", WiFi.localIP().toString().c_str());
+
+        // Sync NTP time — needed to compute "minutes from now" for train arrivals
+        const char* syncLines[] = {"Syncing", "clock..."};
+        showStatus(display, syncLines, 2);
+        configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+        Serial.print("Waiting for NTP time sync");
+        time_t now = time(nullptr);
+        int attempts = 0;
+        while (now < 1000000000L && attempts < 20) {
+            delay(500);
+            Serial.print(".");
+            now = time(nullptr);
+            attempts++;
+        }
+        Serial.println();
+        if (now >= 1000000000L) {
+            Serial.printf("NTP synced: %ld\n", (long)now);
+        } else {
+            Serial.println("NTP sync failed, times may be inaccurate");
+        }
+
         const char* connectedLines[] = {"Connected!"};
         showStatus(display, connectedLines, 1);
         delay(1500);

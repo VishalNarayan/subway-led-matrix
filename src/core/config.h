@@ -1,11 +1,8 @@
 #pragma once
 
-// WiFi Configuration
+// WiFi Configuration (unused — credentials are now managed via NVS provisioning)
 extern const char* WIFI_SSID;
 extern const char* WIFI_PASSWORD;
-
-// API Configuration
-extern const char* API_BASE_URL;
 
 // Display Configuration
 const int DISPLAY_WIDTH = 64;
